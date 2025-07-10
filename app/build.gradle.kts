@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.example.simplenote"
     compileSdk = 35
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.example.simplenote"
@@ -15,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"http://141.11.182.168:8000\"")
     }
 
     buildTypes {
@@ -50,4 +52,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.okhttp)
+    implementation(libs.androidx.security.crypto)
 }
