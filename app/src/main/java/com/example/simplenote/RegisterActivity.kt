@@ -12,14 +12,14 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val firstNameInput = findViewById<EditText>(R.id.editTextFirstName)
-        val lastNameInput = findViewById<EditText>(R.id.editTextLastName)
-        val usernameInput = findViewById<EditText>(R.id.editTextUsername)
-        val emailInput = findViewById<EditText>(R.id.editTextEmail)
-        val passwordInput = findViewById<EditText>(R.id.editTextPassword)
-        val retypePasswordInput = findViewById<EditText>(R.id.editTextRetypePassword)
-        val registerButton = findViewById<Button>(R.id.button_register)
-        val loginLink = findViewById<TextView>(R.id.text_login)
+        val firstNameInput = findViewById<EditText>(R.id.firstName)
+        val lastNameInput = findViewById<EditText>(R.id.lastName)
+        val usernameInput = findViewById<EditText>(R.id.username)
+        val emailInput = findViewById<EditText>(R.id.emailAddress)
+        val passwordInput = findViewById<EditText>(R.id.password)
+        val retypePasswordInput = findViewById<EditText>(R.id.retypePassword)
+        val registerButton = findViewById<Button>(R.id.registerButton)
+        val loginLink = findViewById<TextView>(R.id.loginLink)
 
         registerButton.setOnClickListener {
             val firstName = firstNameInput.text.toString()

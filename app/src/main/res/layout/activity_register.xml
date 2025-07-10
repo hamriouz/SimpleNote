@@ -22,12 +22,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"/>
 
-        <EditText android:hint="First Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:hint="Last Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:hint="Username" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:hint="Email Address" android:inputType="textEmailAddress" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:hint="Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:hint="Retype Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/firstName" android:hint="First Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/lastName" android:hint="Last Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/username" android:hint="Username" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/emailAddress" android:hint="Email Address" android:inputType="textEmailAddress" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/password" android:hint="Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <EditText android:id="@+id/retypePassword" android:hint="Retype Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/registerButton"

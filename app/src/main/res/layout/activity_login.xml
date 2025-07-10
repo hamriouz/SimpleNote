@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
     android:padding="24dp">
 
     <LinearLayout
@@ -25,17 +26,17 @@
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             android:hint="Email Address"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="62dp"
+            android:layout_marginTop="16dp"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginTop="16dp"/>
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/loginButton"

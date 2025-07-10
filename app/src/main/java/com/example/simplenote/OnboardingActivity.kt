@@ -10,7 +10,7 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
 
-        val getStartedButton = findViewById<Button>(R.id.button_get_started)
+        val getStartedButton = findViewById<Button>(R.id.getStartedButton)
         getStartedButton.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
