@@ -22,12 +22,48 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"/>
 
-        <EditText android:id="@+id/firstName" android:hint="First Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:id="@+id/lastName" android:hint="Last Name" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:id="@+id/username" android:hint="Username" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:id="@+id/emailAddress" android:hint="Email Address" android:inputType="textEmailAddress" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:id="@+id/password" android:hint="Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-        <EditText android:id="@+id/retypePassword" android:hint="Retype Password" android:inputType="textPassword" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/firstName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/lastName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/username" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/emailAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/password" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Retype Password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText android:id="@+id/retypePassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" android:background="@drawable/edittext_rect"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/registerButton"
