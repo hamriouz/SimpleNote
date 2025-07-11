@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.simplenote.databinding.FragmentNoteEditorBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NoteEditorFragment : Fragment() {
     private var _binding: FragmentNoteEditorBinding? = null
@@ -33,6 +36,7 @@ class NoteEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val goHome = {
+            saveNoteToDb()
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
@@ -66,6 +70,19 @@ class NoteEditorFragment : Fragment() {
 
     private fun updateLastEdited() {
         binding.lastEditedText.text = "Last edited on ${dateFormat.format(lastEdited)}"
+    }
+
+    private fun saveNoteToDb() {
+        val title = binding.editTitle.text.toString().trim()
+        val content = binding.editContent.text.toString().trim()
+        if (title.isNotBlank() || content.isNotBlank()) {
+            val note = Note(title = title, content = content, lastEdited = System.currentTimeMillis())
+            val db = AppDatabase.getDatabase(requireContext())
+            val repo = NoteRepository(db)
+            CoroutineScope(Dispatchers.IO).launch {
+                repo.insert(note)
+            }
+        }
     }
 
     private fun deleteNote() {
