@@ -20,7 +20,7 @@
         android:id="@+id/onboardingTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jot Down anything you want to achieve, today or in the future"
+        android:text="Jot Down anything you want to \n achieve, today or in the future"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"

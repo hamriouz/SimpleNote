@@ -32,8 +32,11 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.fabAddNote.setOnClickListener {
+            findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment)
+        }
+        binding.navSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_SettingsFragment)
         }
     }
 

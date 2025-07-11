@@ -106,6 +106,10 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             })
+            // TODO: Add real authentication logic here
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         registerLink.setOnClickListener {
