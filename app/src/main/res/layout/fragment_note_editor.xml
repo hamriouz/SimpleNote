@@ -37,7 +37,6 @@
         android:text="Back"
         android:textColor="#5B45FE"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
