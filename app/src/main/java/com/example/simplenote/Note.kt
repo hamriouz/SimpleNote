@@ -9,5 +9,6 @@ data class Note(
     val id: Long = 0,
     var title: String,
     var content: String,
-    var lastEdited: Long = System.currentTimeMillis()
+    var lastEdited: Long = System.currentTimeMillis(),
+    var isSynced: Boolean = false
 ) 
