@@ -12,6 +12,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
@@ -43,6 +44,7 @@ class SettingsFragment : Fragment() {
         }
         val usernameTextView = view.findViewById<TextView>(R.id.userName)
         val emailTextView = view.findViewById<TextView>(R.id.userEmail)
+        val profileImageView = view.findViewById<ImageView>(R.id.profileImage)
         val masterKey = MasterKey.Builder(requireContext())
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
@@ -54,9 +56,13 @@ class SettingsFragment : Fragment() {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+        val id = sharedPreferences.getInt("id", 1)
 
         usernameTextView.text = sharedPreferences.getString("username", "example examplian")
         emailTextView.text = sharedPreferences.getString("email", "something@example.com")
+        val drawableName = "image_${(id % 7) + 1}"
+        val resourceId = resources.getIdentifier(drawableName, "drawable", requireContext().packageName)
+        profileImageView.setImageResource(resourceId)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

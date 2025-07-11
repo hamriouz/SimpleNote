@@ -181,7 +181,7 @@ class RegisterActivity : AppCompatActivity() {
                                 sharedPreferences.edit {
                                     putString("username", jsonObject.getString("username"))
                                         .putString("email", jsonObject.getString("email"))
-                                        .putString("id", jsonObject.getString("id"))
+                                        .putInt("id", jsonObject.getInt("id"))
                                 }
                             }
                         }
