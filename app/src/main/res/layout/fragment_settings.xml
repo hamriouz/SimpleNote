@@ -15,18 +15,7 @@
         android:padding="24dp"
         android:background="@android:color/white">
 
-        <!-- Top bar with back button and title -->
-        <TextView
-            android:id="@+id/settingsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0"
-            android:layout_marginTop="20dp"
-            android:text="Settings"
-            android:textColor="#231942"
-            android:textSize="28sp" />
-
+        <!-- Top bar with back button and centered title -->
         <LinearLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
@@ -40,21 +29,18 @@
                 android:id="@+id/backButton"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="0dp"
-                android:rotation="180"
                 android:src="@drawable/ic_arrow_right"
+                android:rotation="180"
                 app:tint="#5B45FE" />
 
             <TextView
                 android:id="@+id/backText"
-                app:layout_constraintLeft_toRightOf="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
                 android:textColor="#5B45FE"
                 android:textSize="18sp"
                 android:layout_marginStart="-8dp"
-                android:layout_marginEnd="0dp"
                 android:gravity="center_vertical" />
 
             <View
@@ -62,6 +48,21 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
+            <TextView
+                android:id="@+id/settingsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="-70dp"
+                android:text="Settings"
+                android:textColor="#231942"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <!-- Divider below top bar -->
@@ -70,6 +71,11 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EEEEEE" />
+
+        <!-- Add spacing below the divider -->
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
 
         <!-- User info and rest of settings -->
         <LinearLayout
@@ -98,7 +104,7 @@
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Taha Hamifar"
+                    android:text="Hamraz Arafati"
                     android:textColor="#231942"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -120,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="hamifar.taha@gmail.com"
+                        android:text="hamriouz@gmail.com"
                         android:textColor="#888888"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -205,12 +211,16 @@
         <TextView
             android:id="@+id/appVersion"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="17dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="350dp"
+            android:layout_marginBottom="100dp"
             android:text="Hamir Notes v1.1"
             android:textColor="#BDBDBD"
             android:textSize="14sp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 
