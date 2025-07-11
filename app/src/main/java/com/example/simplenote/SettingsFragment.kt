@@ -14,7 +14,10 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
 class SettingsFragment : Fragment() {
     override fun onCreateView(
@@ -56,6 +59,22 @@ class SettingsFragment : Fragment() {
         val btnYes = dialog.findViewById<Button>(R.id.btnYes)
         btnCancel.setOnClickListener { dialog.dismiss() }
         btnYes.setOnClickListener {
+            val masterKey = MasterKey.Builder(requireContext())
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+
+            val sharedPreferences = EncryptedSharedPreferences.create(
+                requireContext(),
+                "secure_prefs",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+
+            sharedPreferences.edit {
+                putString("access_token", "")
+                    .putString("refresh_token", "")
+            }
             dialog.dismiss()
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
