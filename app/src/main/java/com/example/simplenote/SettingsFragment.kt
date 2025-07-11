@@ -10,10 +10,8 @@ import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.Button
-import android.widget.TextView
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 import androidx.security.crypto.EncryptedSharedPreferences
