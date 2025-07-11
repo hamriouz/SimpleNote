@@ -160,6 +160,33 @@ class RegisterActivity : AppCompatActivity() {
                             .putString("refresh_token", refreshToken)
                     }
 
+                    val client = OkHttpClient()
+                    val request = Request.Builder()
+                        .url("${BuildConfig.BASE_URL}/api/auth/userinfo/")
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer ${accessToken}")
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.e("HTTP", "Failed: ${e.message}")
+                            Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (response.code == 200) {
+                                val jsonResponse = response.body!!.string()
+                                val jsonObject = JSONObject(jsonResponse)
+
+
+                                sharedPreferences.edit {
+                                    putString("username", jsonObject.getString("username"))
+                                        .putString("email", jsonObject.getString("email"))
+                                        .putString("id", jsonObject.getString("id"))
+                                }
+                            }
+                        }
+                    })
+
                     val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()

@@ -12,6 +12,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -40,6 +41,23 @@ class SettingsFragment : Fragment() {
         view.findViewById<View>(R.id.logoutRow)?.setOnClickListener {
             showLogoutDialog()
         }
+        val usernameTextView = view.findViewById<TextView>(R.id.userName)
+        val emailTextView = view.findViewById<TextView>(R.id.userEmail)
+        val masterKey = MasterKey.Builder(requireContext())
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            requireContext(),
+            "secure_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        usernameTextView.text = sharedPreferences.getString("username", "example examplian")
+        emailTextView.text = sharedPreferences.getString("email", "something@example.com")
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 goHome()
