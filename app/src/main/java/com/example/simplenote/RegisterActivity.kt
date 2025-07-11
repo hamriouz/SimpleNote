@@ -90,6 +90,9 @@ class RegisterActivity : AppCompatActivity() {
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     showError(this@RegisterActivity, e.message ?: "Network error")
+                    runOnUiThread {
+                        registerButton.isEnabled = true
+                    }
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -98,11 +101,18 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         val errorBody = response.body?.string()
                         val errorMsg = try {
-                            org.json.JSONObject(errorBody).optString("detail", errorBody ?: "Unknown error")
+                            var ret = ""
+                            for (i in 0 until JSONObject(errorBody).getJSONArray("errors").length()) {
+                                ret += "${JSONObject(errorBody).getJSONArray("errors").getJSONObject(i).getString("detail")}\n"
+                            }
+                            ret
                         } catch (e: Exception) {
                             errorBody ?: "Unknown error"
                         }
                         showError(this@RegisterActivity, errorMsg)
+                        runOnUiThread {
+                            registerButton.isEnabled = true
+                        }
                     }
                 }
             })

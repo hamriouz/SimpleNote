@@ -68,11 +68,11 @@ class ChangePasswordFragment : Fragment() {
         }
 
         submitButton.setOnClickListener {
-            changePassword(newPassword.text.toString(), currentPassword.text.toString())
+            changePassword(newPassword.text.toString(), currentPassword.text.toString(), submitButton)
         }
     }
 
-    private fun changePassword(newPassword: String, oldPassword: String) {
+    private fun changePassword(newPassword: String, oldPassword: String, submitButton: Button) {
         val masterKey = MasterKey.Builder(requireContext())
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
@@ -102,6 +102,9 @@ class ChangePasswordFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 showError(requireContext(), e.message ?: "Network error")
+                requireActivity().runOnUiThread {
+                    submitButton.isEnabled = true
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -112,11 +115,18 @@ class ChangePasswordFragment : Fragment() {
                 } else {
                     val errorBody = response.body?.string()
                     val errorMsg = try {
-                        org.json.JSONObject(errorBody).optString("detail", errorBody ?: "Unknown error")
+                        var ret = ""
+                        for (i in 0 until JSONObject(errorBody).getJSONArray("errors").length()) {
+                            ret += "${JSONObject(errorBody).getJSONArray("errors").getJSONObject(i).getString("detail")}\n"
+                        }
+                        ret
                     } catch (e: Exception) {
                         errorBody ?: "Unknown error"
                     }
                     showError(requireContext(), errorMsg)
+                    requireActivity().runOnUiThread {
+                        submitButton.isEnabled = true
+                    }
                 }
             }
         })

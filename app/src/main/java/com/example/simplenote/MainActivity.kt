@@ -9,6 +9,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -24,11 +28,14 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var notes: List<Note>
+    private var pageNumber = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +45,14 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.hide()
+
+
+        val db = AppDatabase.getDatabase(this@MainActivity)
+        val repo = NoteRepository(db)
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            notes = repo.getAllNotes()
+        }
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -94,6 +109,17 @@ class MainActivity : AppCompatActivity() {
                 })
             }
         }
+        pageNumber = 0
+
+        val pageLeftButton = findViewById<ImageButton>(R.id.page_left)
+        val pageRightButton = findViewById<ImageButton>(R.id.page_right)
+        pageLeftButton.isEnabled = true
+        pageRightButton.isEnabled = false
+
+        val arrowImage = findViewById<ImageView>(R.id.arrowToPlus)
+        arrowImage.visibility = ImageView.INVISIBLE
+        val arrowIcons = findViewById<LinearLayout>(R.id.arrow_icons)
+        arrowIcons.visibility = LinearLayout.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -134,4 +160,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun renderNotes() {
+
+    }
+
+    private fun rightPageClicked() {
+
+    }
+
+    private fun leftPageClicked() {
+
+    }
 }
