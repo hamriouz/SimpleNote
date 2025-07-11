@@ -74,50 +74,53 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    Log.d("HTTP", "Success: ${response.body?.string()}")
-                    Log.d("HTTP", "Success: ${response.headers}")
-                    Log.d("HTTP", "Success: ${response.code}")
-
-                    if (response.code == 200 && response.body != null) {
-                        val jsonResponse = response.body!!.string()
-                        val jsonObject = JSONObject(jsonResponse)
-                        val accessToken = jsonObject.getString("access")
-                        val refreshToken = jsonObject.getString("refresh")
-                        val masterKey = MasterKey.Builder(this@LoginActivity)
-                            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                            .build()
-
-                        val sharedPreferences = EncryptedSharedPreferences.create(
-                            this@LoginActivity,
-                            "secure_prefs",
-                            masterKey,
-                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                        )
-
-                        sharedPreferences.edit {
-                            putString("access_token", accessToken)
-                                .putString("refresh_token", refreshToken)
-                        }
-
-                        // todo: move to landing
-                    } else {
-                        // todo: login error handling
-                    }
+                    loginUser(response)
                 }
             })
-            // TODO: Add real authentication logic here
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
         }
 
         registerLink.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
         }
     }
 
     private fun updateLoginButtonState(email: String, password: String, loginButton: Button) {
         loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+    }
+
+    private fun loginUser(response: Response) {
+        Log.d("HTTP", "Success: ${response.body?.string()}")
+        Log.d("HTTP", "Success: ${response.headers}")
+        Log.d("HTTP", "Success: ${response.code}")
+
+        if (response.code == 200 && response.body != null) {
+            val jsonResponse = response.body!!.string()
+            val jsonObject = JSONObject(jsonResponse)
+            val accessToken = jsonObject.getString("access")
+            val refreshToken = jsonObject.getString("refresh")
+            val masterKey = MasterKey.Builder(this@LoginActivity)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+
+            val sharedPreferences = EncryptedSharedPreferences.create(
+                this@LoginActivity,
+                "secure_prefs",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+
+            sharedPreferences.edit {
+                putString("access_token", accessToken)
+                    .putString("refresh_token", refreshToken)
+            }
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // todo: login error handling
+        }
     }
 }
