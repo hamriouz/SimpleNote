@@ -79,7 +79,7 @@
         android:layout_height="0dp"
         android:hint="Feel Free to Write Here..."
         android:textSize="18sp"
-        android:textColor="#888888"
+        android:textColor="#070707"
         android:background="@android:color/transparent"
         android:gravity="top|start"
         android:inputType="textMultiLine"
