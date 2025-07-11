@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import okhttp3.Call
@@ -116,7 +115,7 @@ class RegisterActivity : AppCompatActivity() {
                                 .putString("refresh_token", refreshToken)
                         }
 
-                        // todo: move to landing
+                        loginUser(username, password)
                     } else {
                         // todo: login error handling
                     }
@@ -134,5 +133,62 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun updateRegisterButtonState(firstName: String, lastName: String, username: String, email: String, password: String, retypePassword: String, registerButton: Button) {
         registerButton.isEnabled = firstName.isNotEmpty() && lastName.isNotEmpty() && username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password == retypePassword
+    }
+
+    private fun loginUser(username: String, password: String) {
+        val client = OkHttpClient()
+        val mediaType = "application/json".toMediaType()
+        val body = """{
+            "username": "$username",
+            "password": "$password"
+        }""".trimIndent().toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("${BuildConfig.BASE_URL}/api/auth/token/")
+            .post(body)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HTTP", "Failed: ${e.message}")
+                Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.code == 200) {
+                    val jsonResponse = response.body!!.string()
+                    val jsonObject = JSONObject(jsonResponse)
+                    val accessToken = jsonObject.getString("access")
+                    val refreshToken = jsonObject.getString("refresh")
+                    val masterKey = MasterKey.Builder(this@RegisterActivity)
+                        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                        .build()
+
+                    val sharedPreferences = EncryptedSharedPreferences.create(
+                        this@RegisterActivity,
+                        "secure_prefs",
+                        masterKey,
+                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                    )
+
+                    sharedPreferences.edit {
+                        putString("access_token", accessToken)
+                            .putString("refresh_token", refreshToken)
+                    }
+
+                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        })
     }
 }

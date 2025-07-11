@@ -31,6 +31,47 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val masterKey = MasterKey.Builder(this@LoginActivity)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        val sharedPreferences = EncryptedSharedPreferences.create(
+            this@LoginActivity,
+            "secure_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        val token = sharedPreferences.getString("access_token", "")!!
+
+        val client = OkHttpClient()
+        val mediaType = "application/json".toMediaType()
+        val body = """{
+            "token": "$token"
+        }""".trimIndent().toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("${BuildConfig.BASE_URL}/api/auth/token/verify/")
+            .post(body)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("HTTP", "Failed: ${e.message}")
+                Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                Log.e("HTTP", "${response.code}")
+                if (response.code == 200) {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        })
+
         val emailInput = findViewById<EditText>(R.id.emailEditText)
         val passwordInput = findViewById<EditText>(R.id.passwordEditText)
         val loginButton = findViewById<Button>(R.id.loginButton)
@@ -57,7 +98,12 @@ class LoginActivity : AppCompatActivity() {
 
             val client = OkHttpClient()
             val mediaType = "application/json".toMediaType()
-            val body = "{\n  \"password\": \"${password}\",\n  \"username\": \"${email}\"\n}".toRequestBody(mediaType)
+            val body = """
+                {
+                    "username": "$email",
+                    "password": "$password"
+                }
+            """.trimIndent().toRequestBody(mediaType)
             val request = Request.Builder()
                 .url("${BuildConfig.BASE_URL}/api/auth/token/")
                 .post(body)
