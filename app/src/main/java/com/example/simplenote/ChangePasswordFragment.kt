@@ -25,6 +25,7 @@ import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
 import java.security.KeyStore.TrustedCertificateEntry
+import com.example.simplenote.showError
 
 class ChangePasswordFragment : Fragment() {
     override fun onCreateView(
@@ -100,16 +101,22 @@ class ChangePasswordFragment : Fragment() {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("HTTP", "Failed: ${e.message}")
-                Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+                showError(requireContext(), e.message ?: "Network error")
             }
 
             override fun onResponse(call: Call, response: Response) {
-                Log.e("HTTP", "${response.code}-${response.message}")
                 if (response.code == 200) {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
+                } else {
+                    val errorBody = response.body?.string()
+                    val errorMsg = try {
+                        org.json.JSONObject(errorBody).optString("detail", errorBody ?: "Unknown error")
+                    } catch (e: Exception) {
+                        errorBody ?: "Unknown error"
+                    }
+                    showError(requireContext(), errorMsg)
                 }
             }
         })

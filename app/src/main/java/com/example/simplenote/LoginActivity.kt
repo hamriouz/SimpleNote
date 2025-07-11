@@ -23,6 +23,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.core.content.edit
 import org.json.JSONObject
+import com.example.simplenote.showError
 
 
 class LoginActivity : AppCompatActivity() {
@@ -112,12 +113,21 @@ class LoginActivity : AppCompatActivity() {
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.e("HTTP", "Failed: ${e.message}")
-                    Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+                    showError(this@LoginActivity, e.message ?: "Network error")
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    loginUser(response)
+                    if (response.isSuccessful) {
+                        loginUser(response)
+                    } else {
+                        val errorBody = response.body?.string()
+                        val errorMsg = try {
+                            org.json.JSONObject(errorBody).optString("detail", errorBody ?: "Unknown error")
+                        } catch (e: Exception) {
+                            errorBody ?: "Unknown error"
+                        }
+                        showError(this@LoginActivity, errorMsg)
+                    }
                 }
             })
         }

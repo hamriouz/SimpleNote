@@ -20,6 +20,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
+import com.example.simplenote.showError
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -88,17 +89,21 @@ class RegisterActivity : AppCompatActivity() {
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.e("HTTP", "Failed: ${e.message}")
-                    Log.e("HTTP ERROR", "Failed: ${Log.getStackTraceString(e)}")
+                    showError(this@RegisterActivity, e.message ?: "Network error")
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     if (response.code == 201) {
                         loginUser(username, password)
                     } else {
-                        // todo: login error handling
+                        val errorBody = response.body?.string()
+                        val errorMsg = try {
+                            org.json.JSONObject(errorBody).optString("detail", errorBody ?: "Unknown error")
+                        } catch (e: Exception) {
+                            errorBody ?: "Unknown error"
+                        }
+                        showError(this@RegisterActivity, errorMsg)
                     }
-                    Log.e("HTTP", "Success: ${response.body?.string()}")
                 }
             })
         }
