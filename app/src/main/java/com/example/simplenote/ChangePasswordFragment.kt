@@ -11,6 +11,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -38,6 +39,7 @@ class ChangePasswordFragment : Fragment() {
         val goSettings = {
             findNavController().navigate(R.id.action_changePasswordFragment_to_settingsFragment)
         }
+        (activity as? AppCompatActivity)?.supportActionBar?.hide()
         view.findViewById<View>(R.id.backButton).setOnClickListener { goSettings() }
         view.findViewById<View>(R.id.backText).setOnClickListener { goSettings() }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

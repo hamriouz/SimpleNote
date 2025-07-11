@@ -14,6 +14,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -29,6 +30,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? AppCompatActivity)?.supportActionBar?.hide()
         val goHome = {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)

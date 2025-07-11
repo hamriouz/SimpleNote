@@ -32,10 +32,13 @@
 
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.SimpleNote"
+            />
 
         <activity
             android:name=".RegisterActivity"
+            android:theme="@style/Theme.SimpleNote"
             android:exported="false" />
     </application>
 

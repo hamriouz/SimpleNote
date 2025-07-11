@@ -16,19 +16,31 @@
         android:background="@android:color/white">
 
         <!-- Top bar with back button and title -->
+        <TextView
+            android:id="@+id/settingsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0"
+            android:layout_marginTop="20dp"
+            android:text="Settings"
+            android:textColor="#231942"
+            android:textSize="28sp" />
+
         <LinearLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/backButton"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="0dp"
                 android:rotation="180"
                 android:src="@drawable/ic_arrow_right"
                 app:tint="#5B45FE" />
@@ -41,7 +53,7 @@
                 android:text="Back"
                 android:textColor="#5B45FE"
                 android:textSize="18sp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="-8dp"
                 android:layout_marginEnd="0dp"
                 android:gravity="center_vertical" />
 
@@ -50,16 +62,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/settingsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Settings"
-                android:textColor="#231942"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="170dp"
-                android:layout_weight="0" />
         </LinearLayout>
 
         <!-- Divider below top bar -->
