@@ -91,7 +91,7 @@ class ChangePasswordFragment : Fragment() {
                 }
             """.trimIndent().toRequestBody(mediaType)
         val request = Request.Builder()
-            .url("${BuildConfig.BASE_URL}/api/auth/userinfo/")
+            .url("${BuildConfig.BASE_URL}/api/auth/change-password/")
             .post(body)
             .addHeader("Accept", "application/json")
             .addHeader("Authorization", "Bearer ${accessToken}")
@@ -103,6 +103,7 @@ class ChangePasswordFragment : Fragment() {
             }
 
             override fun onResponse(call: Call, response: Response) {
+                Log.e("HTTP", "${response.code}-${response.message}")
                 if (response.code == 200) {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
