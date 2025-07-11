@@ -57,7 +57,9 @@ class SettingsFragment : Fragment() {
         btnCancel.setOnClickListener { dialog.dismiss() }
         btnYes.setOnClickListener {
             dialog.dismiss()
-            requireActivity().finishAffinity()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
         }
         dialog.show()
         val window = dialog.window
