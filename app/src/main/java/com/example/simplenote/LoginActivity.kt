@@ -21,9 +21,6 @@ import android.util.Log
 
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
 import org.json.JSONObject
 
@@ -90,11 +87,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginUser(response: Response) {
-        Log.d("HTTP", "Success: ${response.body?.string()}")
-        Log.d("HTTP", "Success: ${response.headers}")
-        Log.d("HTTP", "Success: ${response.code}")
-
-        if (response.code == 200 && response.body != null) {
+        if (response.code == 200) {
             val jsonResponse = response.body!!.string()
             val jsonObject = JSONObject(jsonResponse)
             val accessToken = jsonObject.getString("access")

@@ -82,7 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                 "last_name": "$lastName"
             }""".trimMargin().toRequestBody(mediaType)
             val request = Request.Builder()
-                .url("${BuildConfig.BASE_URL}/api/auth/token/")
+                .url("${BuildConfig.BASE_URL}/api/auth/register/")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
@@ -94,11 +94,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    Log.d("HTTP", "Success: ${response.body?.string()}")
-                    Log.d("HTTP", "Success: ${response.headers}")
-                    Log.d("HTTP", "Success: ${response.code}")
-
-                    if (response.code == 201 && response.body != null) {
+                    if (response.code == 201) {
                         val jsonResponse = response.body!!.string()
                         val jsonObject = JSONObject(jsonResponse)
                         val accessToken = jsonObject.getString("access")
@@ -124,6 +120,7 @@ class RegisterActivity : AppCompatActivity() {
                     } else {
                         // todo: login error handling
                     }
+                    Log.e("HTTP", "Success: ${response.body?.string()}")
                 }
             })
         }
