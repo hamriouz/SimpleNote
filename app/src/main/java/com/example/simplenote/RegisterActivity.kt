@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
             val mediaType = "application/json".toMediaType()
             val body = """{  
                 "password": "$password",
-                "username": "$email",
+                "email": "$email",
                 "username": "$username",
                 "first_name": "$firstName",
                 "last_name": "$lastName"
@@ -94,27 +94,6 @@ class RegisterActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call, response: Response) {
                     if (response.code == 201) {
-                        val jsonResponse = response.body!!.string()
-                        val jsonObject = JSONObject(jsonResponse)
-                        val accessToken = jsonObject.getString("access")
-                        val refreshToken = jsonObject.getString("refresh")
-                        val masterKey = MasterKey.Builder(this@RegisterActivity)
-                            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                            .build()
-
-                        val sharedPreferences = EncryptedSharedPreferences.create(
-                            this@RegisterActivity,
-                            "secure_prefs",
-                            masterKey,
-                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                        )
-
-                        sharedPreferences.edit {
-                            putString("access_token", accessToken)
-                                .putString("refresh_token", refreshToken)
-                        }
-
                         loginUser(username, password)
                     } else {
                         // todo: login error handling
@@ -132,7 +111,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun updateRegisterButtonState(firstName: String, lastName: String, username: String, email: String, password: String, retypePassword: String, registerButton: Button) {
-        registerButton.isEnabled = firstName.isNotEmpty() && lastName.isNotEmpty() && username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password == retypePassword
+        val emailPattern = Regex("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$")
+        registerButton.isEnabled = firstName.isNotEmpty() && lastName.isNotEmpty() && username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password == retypePassword && emailPattern.matches(email)
     }
 
     private fun loginUser(username: String, password: String) {
