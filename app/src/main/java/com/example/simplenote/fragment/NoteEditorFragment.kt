@@ -1,6 +1,5 @@
-package com.example.simplenote
+package com.example.simplenote.fragment
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.simplenote.core.data.local.AppDatabase
+import com.example.simplenote.core.repository.NoteRepository
+import com.example.simplenote.R
+import com.example.simplenote.core.util.UserManager
+import com.example.simplenote.activity.MainActivity
 import com.example.simplenote.bottomsheet.DeleteBottomSheet
 import com.example.simplenote.databinding.FragmentNoteEditorBinding
+import com.example.simplenote.core.data.local.model.Note
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.coroutines.CoroutineScope

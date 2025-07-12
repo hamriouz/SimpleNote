@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.core.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

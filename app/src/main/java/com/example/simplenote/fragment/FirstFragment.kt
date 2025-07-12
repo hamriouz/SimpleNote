@@ -1,18 +1,27 @@
-package com.example.simplenote
+package com.example.simplenote.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.simplenote.core.data.local.AppDatabase
+import com.example.simplenote.adapter.NoteAdapter
+import com.example.simplenote.core.repository.NoteRepository
+import com.example.simplenote.R
+import com.example.simplenote.core.util.UserManager
 import com.example.simplenote.databinding.FragmentFirstBinding
+import com.example.simplenote.core.data.local.model.Note
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -27,6 +36,12 @@ class FirstFragment : Fragment() {
     private lateinit var notes: List<Note>
     private lateinit var noteAdapter: NoteAdapter
     private lateinit var repo: NoteRepository
+
+    private val username by lazy { UserManager.getCurrentUsername(requireContext()) }
+
+    private val pageSize = 8
+    private var currentPage = 0
+    private var isEndPage = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +61,7 @@ class FirstFragment : Fragment() {
 
         setupRecyclerView()
         setupSearchView()
-        loadNotes()
+        loadNotes(page = currentPage++)
 
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
         binding.fabAddNote.setOnClickListener {
@@ -56,15 +71,35 @@ class FirstFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_SettingsFragment)
         }
     }
+
     private fun setupRecyclerView() {
-        noteAdapter = NoteAdapter(mutableListOf()) { note ->
-            val bundle = Bundle().apply {
-                putInt("noteId", note.id.toInt())
-            }
+        noteAdapter = NoteAdapter { note ->
+            val bundle = Bundle().apply { putInt("noteId", note.id.toInt()) }
             findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment, bundle)
         }
         binding.recyclerView.adapter = noteAdapter
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                synchronized("page_load") {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= pageSize
+                    ) {
+                        loadNotes(currentPage++)
+                    }
+                }
+            }
+        })
+
     }
 
     private fun setupSearchView() {
@@ -74,28 +109,36 @@ class FirstFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                noteAdapter.clear()
                 val query = newText?.trim() ?: ""
                 if (query.isEmpty()) {
-                    noteAdapter.updateNotes(notes)
+                    currentPage = 0
+                    loadNotes(currentPage++)
                 } else {
-                    val filteredNotes = notes.filter { note ->
-                        note.title.contains(query, ignoreCase = true) || 
-                        note.content.contains(query, ignoreCase = true)
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        val list = repo.searchNotes(username = username, query = query)
+                        noteAdapter.updateNotes(list)
                     }
-                    noteAdapter.updateNotes(filteredNotes)
                 }
                 return true
             }
         })
     }
 
-    private fun loadNotes() {
+    private fun loadNotes(page: Int) {
+        if (isEndPage) return
         lifecycleScope.launch(Dispatchers.Default) {
-            val username = UserManager.getCurrentUsername(requireContext())
-            notes = repo.getAllNotes(username)
+            delay(300)
+
+            notes = repo.getAllNotes(
+                username = username,
+                limit = pageSize,
+                offset = (page * pageSize)
+            )
+            isEndPage = notes.isEmpty()
             lifecycleScope.launch(Dispatchers.Main) {
                 noteAdapter.updateNotes(notes)
-                setVisibilities(notes.isEmpty())
+                if (page == 0) setVisibilities(notes.isEmpty())
             }
         }
     }

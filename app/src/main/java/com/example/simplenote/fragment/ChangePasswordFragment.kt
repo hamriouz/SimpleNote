@@ -1,8 +1,7 @@
-package com.example.simplenote
+package com.example.simplenote.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.simplenote.BuildConfig
+import com.example.simplenote.R
+import com.example.simplenote.activity.MainActivity
+import com.example.simplenote.core.util.showError
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,8 +26,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import java.security.KeyStore.TrustedCertificateEntry
-import com.example.simplenote.showError
 
 class ChangePasswordFragment : Fragment() {
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +19,9 @@ import androidx.core.content.edit
 import androidx.core.graphics.drawable.toDrawable
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.simplenote.R
+import com.example.simplenote.activity.LoginActivity
+import com.example.simplenote.activity.MainActivity
 
 class SettingsFragment : Fragment() {
     override fun onCreateView(

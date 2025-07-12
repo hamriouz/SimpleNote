@@ -59,12 +59,10 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:paddingHorizontal="8dp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/bottomNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notesTitle"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/notesTitle" />
 
     <ImageView
         android:id="@+id/emptyIllustration"

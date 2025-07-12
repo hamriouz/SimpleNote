@@ -1,6 +1,7 @@
-package com.example.simplenote
+package com.example.simplenote.core.data.local.dao
 
 import androidx.room.*
+import com.example.simplenote.core.data.local.model.Note
 
 @Dao
 interface NoteDao {
@@ -16,8 +17,12 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = :id AND username = :username")
     suspend fun getNoteById(id: Long, username: String): Note?
 
-    @Query("SELECT * FROM notes WHERE username = :username ORDER BY lastEdited DESC")
-    suspend fun getAllNotes(username: String): List<Note>
+    @Query("SELECT * FROM notes WHERE username = :username ORDER BY lastEdited DESC LIMIT :limit OFFSET :offset")
+    suspend fun getAllNotes(
+        username: String,
+        limit: Int,
+        offset: Int
+    ): List<Note>
 
     @Query("SELECT * FROM notes WHERE username = :username ORDER BY lastEdited DESC LIMIT :limit OFFSET :offset")
     suspend fun getNotesWithPagination(username: String, limit: Int, offset: Int): List<Note>

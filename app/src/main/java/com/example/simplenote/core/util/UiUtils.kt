@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.core.util
 
 import android.content.Context
 import android.os.Handler

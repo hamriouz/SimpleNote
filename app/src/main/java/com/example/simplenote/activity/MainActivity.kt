@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +9,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.simplenote.BuildConfig
+import com.example.simplenote.R
 import com.example.simplenote.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import okhttp3.Call
@@ -28,7 +26,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 

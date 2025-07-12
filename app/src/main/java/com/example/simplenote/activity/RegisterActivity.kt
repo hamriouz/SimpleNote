@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,8 @@ import androidx.core.content.edit
 import androidx.core.widget.doAfterTextChanged
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.simplenote.BuildConfig
+import com.example.simplenote.R
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,7 +22,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
 import java.io.IOException
-import com.example.simplenote.showError
+import com.example.simplenote.core.util.showError
 
 class RegisterActivity : AppCompatActivity() {
 

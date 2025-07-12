@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,8 @@ import okhttp3.Response
 import java.io.IOException
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.example.simplenote.BuildConfig
+import com.example.simplenote.R
 
 class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

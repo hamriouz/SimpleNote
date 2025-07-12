@@ -1,4 +1,4 @@
-package com.example.simplenote
+package com.example.simplenote.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,8 +22,10 @@ import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.core.content.edit
+import com.example.simplenote.BuildConfig
+import com.example.simplenote.R
 import org.json.JSONObject
-import com.example.simplenote.showError
+import com.example.simplenote.core.util.showError
 
 
 class LoginActivity : AppCompatActivity() {

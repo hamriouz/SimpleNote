@@ -1,13 +1,15 @@
-package com.example.simplenote
+package com.example.simplenote.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.simplenote.R
+import com.example.simplenote.core.data.local.model.Note
 
 class NoteAdapter(
-    private var notes: List<Note>,
+    private var notes: ArrayList<Note> = ArrayList(),
     private val onNoteClick: (Note) -> Unit
 ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -30,8 +32,13 @@ class NoteAdapter(
 
     override fun getItemCount(): Int = notes.size
 
+    fun clear() {
+        notes.clear()
+        notifyDataSetChanged()
+    }
+
     fun updateNotes(newNotes: List<Note>) {
-        notes = newNotes
+        notes.addAll(newNotes)
         notifyDataSetChanged()
     }
 } 
