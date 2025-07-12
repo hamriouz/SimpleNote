@@ -1,6 +1,9 @@
  # SimpleNote - Android Note-Taking App
 
 A modern, user-friendly note-taking application for Android with secure user authentication and intuitive design.
+This android application was created for Mobile Development course in Sharif University of Technology. 
+Figma design:
+https://www.figma.com/design/qTmbl7cAJiUBxypcbrI4ON/Note-Taking-App-UI---Design-System?node-id=1945-2807&p=f&t=rPBSHCpb6D8MuNYz-0
 
 ## 📱 Features
 
