@@ -10,14 +10,14 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Register"
+            android:text="@string/register"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="And start taking notes"
+            android:text="@string/and_start_taking_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"/>
@@ -25,58 +25,64 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name"
+            android:hint="@string/first_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/firstName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstName" android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last Name"
+            android:hint="@string/last_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/lastName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastName" android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="@string/username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/username" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username" android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:hint="@string/email_address"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/emailAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/password" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Retype Password"
+            android:hint="@string/retype_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <EditText android:id="@+id/retypePassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" android:background="@drawable/edittext_rect"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/retypePassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
+            android:hint="@string/register"
             android:layout_marginTop="24dp"/>
 
         <TextView
             android:id="@+id/loginLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Login here"
+            android:text="@string/already_have_an_account_login_here"
             android:textColor="#5B45FE"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"/>
