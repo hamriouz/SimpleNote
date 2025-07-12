@@ -111,15 +111,8 @@ class MainActivity : AppCompatActivity() {
         }
         pageNumber = 0
 
-        val pageLeftButton = findViewById<ImageButton>(R.id.page_left)
-        val pageRightButton = findViewById<ImageButton>(R.id.page_right)
-        pageLeftButton.isEnabled = true
-        pageRightButton.isEnabled = false
-
         val arrowImage = findViewById<ImageView>(R.id.arrowToPlus)
         arrowImage.visibility = ImageView.INVISIBLE
-        val arrowIcons = findViewById<LinearLayout>(R.id.arrow_icons)
-        arrowIcons.visibility = LinearLayout.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -158,17 +151,5 @@ class MainActivity : AppCompatActivity() {
             window.decorView.systemUiVisibility = (android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
                     or android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
         }
-    }
-
-    private fun renderNotes() {
-
-    }
-
-    private fun rightPageClicked() {
-
-    }
-
-    private fun leftPageClicked() {
-
     }
 }
