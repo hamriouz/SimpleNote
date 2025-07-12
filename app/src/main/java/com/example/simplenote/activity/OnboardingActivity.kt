@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
+import androidx.core.content.edit
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -38,6 +39,9 @@ class OnboardingActivity : AppCompatActivity() {
         )
 
         val token = sharedPreferences.getString("access_token", "")!!
+        sharedPreferences.edit {
+            putBoolean("isUpdated", true)
+        }
 
         if (token.isEmpty()) {
             getStartedButton.setOnClickListener {

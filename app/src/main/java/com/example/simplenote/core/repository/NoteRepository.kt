@@ -27,4 +27,8 @@ class NoteRepository(private val db: AppDatabase) {
         db.noteDao().searchNotesWithPagination(username, query, limit, offset)
     
     suspend fun getSearchNotesCount(username: String, query: String): Int = db.noteDao().getSearchNotesCount(username, query)
-} 
+
+    suspend fun deleteAllNotes() = db.noteDao().deleteAllNotes()
+
+    suspend fun getNoteByUserId(userId: Long) = db.noteDao().getNoteByUserId(userId)
+}

@@ -195,7 +195,6 @@ class LoginActivity : AppCompatActivity() {
                         val jsonResponse = response.body!!.string()
                         val jsonObject = JSONObject(jsonResponse)
 
-
                         sharedPreferences.edit {
                             putString("username", jsonObject.getString("username"))
                                 .putString("email", jsonObject.getString("email"))

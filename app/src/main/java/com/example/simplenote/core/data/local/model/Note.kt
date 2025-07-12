@@ -11,5 +11,9 @@ data class Note(
     var content: String,
     var lastEdited: Long = System.currentTimeMillis(),
     var isSynced: Boolean = false,
-    var username: String = ""
+    var username: String = "",
+    var isPinned: Boolean = false,
+    var color: String = "orange",
+    var userId: Long = 0,
+
 ) 

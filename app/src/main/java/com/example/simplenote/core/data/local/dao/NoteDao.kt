@@ -17,6 +17,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE id = :id AND username = :username")
     suspend fun getNoteById(id: Long, username: String): Note?
 
+    @Query("SELECT * FROM notes WHERE userId = :userId")
+    suspend fun getNoteByUserId(userId: Long): Note?
+
     @Query("SELECT * FROM notes WHERE username = :username ORDER BY lastEdited DESC LIMIT :limit OFFSET :offset")
     suspend fun getAllNotes(
         username: String,
@@ -38,4 +41,7 @@ interface NoteDao {
 
     @Query("SELECT COUNT(*) FROM notes WHERE username = :username AND (title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%')")
     suspend fun getSearchNotesCount(username: String, query: String): Int
+
+    @Query("DELETE FROM notes")
+    suspend fun deleteAllNotes()
 } 

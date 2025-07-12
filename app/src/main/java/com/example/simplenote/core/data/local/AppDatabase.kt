@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.simplenote.core.data.local.dao.NoteDao
 import com.example.simplenote.core.data.local.model.Note
 
-@Database(entities = [Note::class], version = 3, exportSchema = false)
+@Database(entities = [Note::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
@@ -30,12 +30,25 @@ abstract class AppDatabase : RoomDatabase() {
                         database.execSQL("ALTER TABLE notes ADD COLUMN username TEXT NOT NULL DEFAULT ''")
                     }
                 }
+
+                val MIGRATION_3_4 = object : Migration(3, 4) {
+                    override fun migrate(database: SupportSQLiteDatabase) {
+                        database.execSQL("ALTER TABLE notes ADD COLUMN isPinned INTEGER NOT NULL DEFAULT 0")
+                        database.execSQL("ALTER TABLE notes ADD COLUMN color TEXT NOT NULL DEFAULT 'orange'")
+                    }
+                }
+
+                val MIGRATION_4_5 = object : Migration(4, 5) {
+                    override fun migrate(database: SupportSQLiteDatabase) {
+                        database.execSQL("ALTER TABLE notes ADD COLUMN userId INTEGER NOT NULL DEFAULT 0")
+                    }
+                }
                 
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "simplenote_db"
-                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build()
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5).build()
                 INSTANCE = instance
                 instance
             }

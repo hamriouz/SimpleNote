@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    card_view:cardCornerRadius="12dp"
+    card_view:cardCornerRadius="32dp"
     card_view:cardElevation="3dp"
     card_view:cardBackgroundColor="#FFF9DB">
 
@@ -17,15 +17,15 @@
 
         <TextView
             android:id="@+id/noteTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="New Product Idea Design"
-            android:textStyle="bold"
             android:textColor="#231942"
             android:textSize="16sp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/noteContent"
@@ -38,5 +38,18 @@
             android:maxLines="4"
             android:ellipsize="end"
             android:lineSpacingExtra="2dp"/>
+
     </LinearLayout>
+    <ImageView
+        android:id="@+id/noteImage"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:scaleX="0.2"
+        android:scaleY="0.2"
+        android:src="@drawable/pin96"
+        android:layout_gravity="end"
+        android:translationX="25dp"
+        android:translationY="-25dp"
+        android:visibility="invisible"
+        />
 </androidx.cardview.widget.CardView> 
