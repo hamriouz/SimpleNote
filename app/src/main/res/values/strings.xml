@@ -40,4 +40,8 @@
     <string name="change_password">Change Password</string>
     <string name="notes">Notes</string>
     <string name="search_image">search_image</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="are_you_sure_you_want_to_log_out_from_the_application">Are you sure you want to log out from the application?</string>
+    <string name="log_out">Log Out</string>
 </resources>

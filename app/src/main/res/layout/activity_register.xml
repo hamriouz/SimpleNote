@@ -75,8 +75,9 @@
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/register"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp"
+            android:text="@string/register"
+            android:backgroundTint="@color/login_button" />
 
         <TextView
             android:id="@+id/loginLink"
