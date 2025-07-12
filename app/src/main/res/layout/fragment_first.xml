@@ -12,7 +12,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background="@drawable/edittext_rect"
         android:orientation="horizontal"
         android:padding="12dp"
         android:visibility="gone"
@@ -25,6 +24,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/search_image"
             android:src="@android:drawable/ic_menu_search"
             app:tint="#888888" />
 
@@ -32,7 +32,7 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:background="@drawable/edittext_rect"
             app:iconifiedByDefault="false"
             app:queryHint="Search..."
             app:searchIcon="@null" />
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Notes"
+        android:text="@string/notes"
         android:textColor="#231942"
         android:textSize="20sp"
         android:textStyle="bold"

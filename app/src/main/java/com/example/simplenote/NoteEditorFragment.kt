@@ -1,5 +1,6 @@
 package com.example.simplenote
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,9 +12,10 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.example.simplenote.bottomsheet.DeleteBottomSheet
 import com.example.simplenote.databinding.FragmentNoteEditorBinding
-import com.example.simplenote.R
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -40,13 +42,13 @@ class NoteEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
-        
+
         // Get note ID from arguments if editing existing note
         noteId = arguments?.getInt("noteId", -1) ?: -1
         if (noteId != -1) {
             loadExistingNote()
         }
-        
+
         val goHome = {
             saveNoteToDb()
             val intent = Intent(requireContext(), MainActivity::class.java)
@@ -55,13 +57,15 @@ class NoteEditorFragment : Fragment() {
         }
         binding.backButton.setOnClickListener { goHome() }
         binding.backText.setOnClickListener { goHome() }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                goHome()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    goHome()
+                }
+            })
         binding.btnDeleteBottom.setOnClickListener {
-            deleteNote()
+            showDeleteConfirmationDialog()
         }
 
         val watcher = object : TextWatcher {
@@ -70,6 +74,7 @@ class NoteEditorFragment : Fragment() {
                 lastEdited = Date()
                 updateLastEdited()
             }
+
             override fun afterTextChanged(s: Editable?) {}
         }
         binding.editTitle.addTextChangedListener(watcher)
@@ -107,7 +112,7 @@ class NoteEditorFragment : Fragment() {
             val username = UserManager.getCurrentUsername(requireContext())
             val db = AppDatabase.getDatabase(requireContext())
             val repo = NoteRepository(db)
-            
+
             CoroutineScope(Dispatchers.IO).launch {
                 if (currentNote != null) {
                     // Update existing note
@@ -118,8 +123,8 @@ class NoteEditorFragment : Fragment() {
                 } else {
                     // Create new note
                     val note = Note(
-                        title = title, 
-                        content = content, 
+                        title = title,
+                        content = content,
                         lastEdited = System.currentTimeMillis(),
                         username = username
                     )
@@ -127,6 +132,18 @@ class NoteEditorFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        setFragmentResultListener(
+            requestKey = DeleteBottomSheet.DELETE_RESULT,
+            listener = { _, _ ->
+                deleteNote()
+            }
+        )
+        findNavController().navigate(
+            R.id.noteEditorFragment_delete_dialog
+        )
     }
 
     private fun deleteNote() {
@@ -142,8 +159,6 @@ class NoteEditorFragment : Fragment() {
                     requireActivity().finish()
                 }
             }
-        } ?: run {
-            Toast.makeText(requireContext(), "No note to delete", Toast.LENGTH_SHORT).show()
         }
     }
 

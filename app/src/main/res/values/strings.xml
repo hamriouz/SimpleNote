@@ -29,4 +29,15 @@
     <string name="home_navigation">home navigation</string>
     <string name="arrow">arrow</string>
     <string name="title">Title</string>
+    <string name="please_input_your_current_password_first">Please input your current password first</string>
+    <string name="current_password">Current Password</string>
+    <string name="now_create_your_new_password">Now, create your new password</string>
+    <string name="new_password">New Password</string>
+    <string name="password_should_contain_a_z_a_z_0_9">Password should contain a-z, A-Z, 0-9</string>
+    <string name="retype_new_password">Retype New Password</string>
+    <string name="submit_new_password">Submit New Password</string>
+    <string name="back">Back</string>
+    <string name="change_password">Change Password</string>
+    <string name="notes">Notes</string>
+    <string name="search_image">search_image</string>
 </resources>
