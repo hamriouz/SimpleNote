@@ -32,7 +32,7 @@ class NoteListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = NoteAdapter(emptyList()) { note ->
+        adapter = NoteAdapter(mutableListOf()) { note ->
             // TODO: Navigate to note editor with note.id
         }
         recyclerView.adapter = adapter
@@ -44,7 +44,8 @@ class NoteListFragment : Fragment() {
 
     private fun loadNotes() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val notes = repo.getAllNotes()
+            val username = UserManager.getCurrentUsername(requireContext())
+            val notes = repo.getAllNotes(username)
             adapter.updateNotes(notes)
         }
     }

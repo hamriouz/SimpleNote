@@ -26,6 +26,8 @@ class NoteEditorFragment : Fragment() {
 
     private var lastEdited: Date = Date()
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+    private var currentNote: Note? = null
+    private var noteId: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +40,13 @@ class NoteEditorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
+        
+        // Get note ID from arguments if editing existing note
+        noteId = arguments?.getInt("noteId", -1) ?: -1
+        if (noteId != -1) {
+            loadExistingNote()
+        }
+        
         val goHome = {
             saveNoteToDb()
             val intent = Intent(requireContext(), MainActivity::class.java)
@@ -69,6 +78,24 @@ class NoteEditorFragment : Fragment() {
         updateLastEdited()
     }
 
+    private fun loadExistingNote() {
+        val db = AppDatabase.getDatabase(requireContext())
+        val repo = NoteRepository(db)
+        CoroutineScope(Dispatchers.IO).launch {
+            val username = UserManager.getCurrentUsername(requireContext())
+            val note = repo.getNoteById(noteId.toLong(), username)
+            note?.let {
+                currentNote = it
+                CoroutineScope(Dispatchers.Main).launch {
+                    binding.editTitle.setText(it.title)
+                    binding.editContent.setText(it.content)
+                    lastEdited = Date(it.lastEdited)
+                    updateLastEdited()
+                }
+            }
+        }
+    }
+
     private fun updateLastEdited() {
         binding.lastEditedText.text = "Last edited on ${dateFormat.format(lastEdited)}"
     }
@@ -77,19 +104,47 @@ class NoteEditorFragment : Fragment() {
         val title = binding.editTitle.text.toString().trim()
         val content = binding.editContent.text.toString().trim()
         if (title.isNotBlank() || content.isNotBlank()) {
-            val note = Note(title = title, content = content, lastEdited = System.currentTimeMillis())
+            val username = UserManager.getCurrentUsername(requireContext())
             val db = AppDatabase.getDatabase(requireContext())
             val repo = NoteRepository(db)
+            
             CoroutineScope(Dispatchers.IO).launch {
-                repo.insert(note)
+                if (currentNote != null) {
+                    // Update existing note
+                    currentNote!!.title = title
+                    currentNote!!.content = content
+                    currentNote!!.lastEdited = System.currentTimeMillis()
+                    repo.update(currentNote!!)
+                } else {
+                    // Create new note
+                    val note = Note(
+                        title = title, 
+                        content = content, 
+                        lastEdited = System.currentTimeMillis(),
+                        username = username
+                    )
+                    repo.insert(note)
+                }
             }
         }
     }
 
     private fun deleteNote() {
-        // TODO: Implement actual note deletion logic
-        Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_SHORT).show()
-        findNavController().navigateUp()
+        currentNote?.let { note ->
+            val db = AppDatabase.getDatabase(requireContext())
+            val repo = NoteRepository(db)
+            CoroutineScope(Dispatchers.IO).launch {
+                repo.delete(note)
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(requireContext(), "Note deleted", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+        } ?: run {
+            Toast.makeText(requireContext(), "No note to delete", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {
