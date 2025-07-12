@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var notes: List<Note>
     private var pageNumber = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,14 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.hide()
-
-
-        val db = AppDatabase.getDatabase(this@MainActivity)
-        val repo = NoteRepository(db)
-
-        lifecycleScope.launch(Dispatchers.Default) {
-            notes = repo.getAllNotes()
-        }
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -111,8 +102,6 @@ class MainActivity : AppCompatActivity() {
         }
         pageNumber = 0
 
-        val arrowImage = findViewById<ImageView>(R.id.arrowToPlus)
-        arrowImage.visibility = ImageView.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
