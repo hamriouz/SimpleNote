@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.simplenote.databinding.FragmentNoteEditorBinding
+import com.example.simplenote.R
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -43,8 +44,8 @@ class NoteEditorFragment : Fragment() {
             startActivity(intent)
             requireActivity().finish()
         }
-        binding.btnBack.setOnClickListener { goHome() }
-        binding.tvBack.setOnClickListener { goHome() }
+        binding.backButton.setOnClickListener { goHome() }
+        binding.backText.setOnClickListener { goHome() }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 goHome()

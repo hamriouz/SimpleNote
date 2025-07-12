@@ -7,30 +7,26 @@
     android:background="#4A4A4A"
     tools:context=".SettingsFragment">
 
+    <!-- Top bar with back button and centered title -->
     <LinearLayout
-        android:id="@+id/settingsRoot"
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:background="@android:color/white">
-
-        <!-- Top bar with back button and centered title -->
-        <LinearLayout
-            android:id="@+id/topBar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@android:color/white"
-            android:layout_marginTop="20dp">
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:layout_marginTop="20dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
                 android:id="@+id/backButton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_arrow_right"
-                android:rotation="180"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/purple_arrow"
                 app:tint="#5B45FE" />
 
             <TextView
@@ -40,7 +36,7 @@
                 android:text="Back"
                 android:textColor="#5B45FE"
                 android:textSize="18sp"
-                android:layout_marginStart="-8dp"
+                android:layout_marginStart="8dp"
                 android:gravity="center_vertical" />
 
             <View
@@ -65,25 +61,44 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <!-- Divider below top bar -->
-        <View
-            android:id="@+id/topDivider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE" />
+    <!-- Divider below top bar -->
+    <View
+        android:id="@+id/topDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Add spacing below the divider -->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
+    <!-- Content ScrollView -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/topDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- User info and rest of settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+            android:padding="24dp"
             android:background="@android:color/white">
+
+            <!-- Add spacing below the divider -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <!-- User info and rest of settings -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@android:color/white">
 
             <ImageView
                 android:id="@+id/profileImage"
@@ -175,7 +190,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/arrowright"
+                android:src="@drawable/cheveron_right"
                 app:tint="#888888" />
         </LinearLayout>
 
@@ -208,19 +223,20 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/appVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="350dp"
-            android:layout_marginBottom="100dp"
-            android:text="Hamir Notes v1.1"
-            android:textColor="#BDBDBD"
-            android:textSize="14sp" />
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/appVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="350dp"
+                android:layout_marginBottom="100dp"
+                android:text="Hamir Notes v1.1"
+                android:textColor="#BDBDBD"
+                android:textSize="14sp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

@@ -32,7 +32,11 @@
         android:id="@+id/noteEditorFragment"
         android:name="com.example.simplenote.NoteEditorFragment"
         android:label="Note Editor"
-        tools:layout="@layout/fragment_note_editor" />
+        tools:layout="@layout/fragment_note_editor">
+        <action
+            android:id="@+id/action_noteEditorFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
     <action
         android:id="@+id/action_firstFragment_to_noteEditorFragment"
         app:destination="@id/noteEditorFragment" />
