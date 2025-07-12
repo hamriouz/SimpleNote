@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,12 +34,15 @@ class NoteListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = NoteAdapter(mutableListOf()) { note ->
-            // TODO: Navigate to note editor with note.id
+            val bundle = Bundle().apply {
+                putInt("noteId", note.id.toInt())
+            }
+            findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment, bundle)
         }
         recyclerView.adapter = adapter
         loadNotes()
         fabAddNote.setOnClickListener {
-            // TODO: Navigate to note editor for new note
+            findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment)
         }
     }
 
