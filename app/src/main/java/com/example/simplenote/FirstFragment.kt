@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.simplenote.databinding.FragmentFirstBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +25,8 @@ class FirstFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var notes: List<Note>
+    private lateinit var noteAdapter: NoteAdapter
+    private lateinit var repo: NoteRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +42,11 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val db = AppDatabase.getDatabase(requireContext())
-        val repo = NoteRepository(db)
+        repo = NoteRepository(db)
 
-        lifecycleScope.launch(Dispatchers.Default) {
-            notes = repo.getAllNotes()
-            setVisibilities(notes.isEmpty())
-            initRecyclerView(notes)
-        }
+        setupRecyclerView()
+        setupSearchView()
+        loadNotes()
 
         (activity as? AppCompatActivity)?.supportActionBar?.hide()
         binding.fabAddNote.setOnClickListener {
@@ -56,22 +56,54 @@ class FirstFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_SettingsFragment)
         }
     }
-    private fun initRecyclerView(list: List<Note>) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val adapter = NoteAdapter(list) { note ->
-                // Handle note click - navigate to editor
-                val bundle = Bundle().apply {
-                    putInt("noteId", note.id.toInt())
-                }
-                findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment, bundle)
+    private fun setupRecyclerView() {
+        noteAdapter = NoteAdapter(mutableListOf()) { note ->
+            val bundle = Bundle().apply {
+                putInt("noteId", note.id.toInt())
             }
-            binding.recyclerView.adapter = adapter
-            binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+            findNavController().navigate(R.id.action_firstFragment_to_noteEditorFragment, bundle)
+        }
+        binding.recyclerView.adapter = noteAdapter
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val query = newText?.trim() ?: ""
+                if (query.isEmpty()) {
+                    noteAdapter.updateNotes(notes)
+                } else {
+                    val filteredNotes = notes.filter { note ->
+                        note.title.contains(query, ignoreCase = true) || 
+                        note.content.contains(query, ignoreCase = true)
+                    }
+                    noteAdapter.updateNotes(filteredNotes)
+                }
+                return true
+            }
+        })
+    }
+
+    private fun loadNotes() {
+        lifecycleScope.launch(Dispatchers.Default) {
+            val username = UserManager.getCurrentUsername(requireContext())
+            notes = repo.getAllNotes(username)
+            lifecycleScope.launch(Dispatchers.Main) {
+                noteAdapter.updateNotes(notes)
+                setVisibilities(notes.isEmpty())
+            }
         }
     }
 
     private fun setVisibilities(isDataEmpty: Boolean) {
         binding.recyclerView.isVisible = !isDataEmpty
+        binding.searchCard.isVisible = !isDataEmpty
+        binding.notesTitle.isVisible = !isDataEmpty
         binding.emptyIllustration.isVisible = isDataEmpty
         binding.emptyTitle.isVisible = isDataEmpty
         binding.emptySubtitle.isVisible = isDataEmpty

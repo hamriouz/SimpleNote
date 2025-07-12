@@ -10,5 +10,6 @@ data class Note(
     var title: String,
     var content: String,
     var lastEdited: Long = System.currentTimeMillis(),
-    var isSynced: Boolean = false
+    var isSynced: Boolean = false,
+    var username: String = ""
 ) 
