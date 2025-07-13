@@ -2,11 +2,12 @@ package com.example.simplenote.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doAfterTextChanged
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import okhttp3.MediaType.Companion.toMediaType
 
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -23,16 +24,16 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.core.content.edit
 import com.example.simplenote.BuildConfig
-import com.example.simplenote.R
+import com.example.simplenote.compose.LoginScreen
+import com.example.simplenote.ui.theme.SimpleNoteTheme
 import org.json.JSONObject
 import com.example.simplenote.core.util.showError
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
         val masterKey = MasterKey.Builder(this@LoginActivity)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -75,84 +76,64 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        val emailInput = findViewById<EditText>(R.id.emailEditText)
-        val passwordInput = findViewById<EditText>(R.id.passwordEditText)
-        val loginButton = findViewById<Button>(R.id.loginButton)
-        val registerLink = findViewById<TextView>(R.id.registerLink)
-
-        loginButton.setOnClickListener {
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
-        }
-
-        loginButton.isEnabled = false
-
-        emailInput.doAfterTextChanged {
-            updateLoginButtonState(emailInput.text.toString(), passwordInput.text.toString(), loginButton)
-        }
-
-        passwordInput.doAfterTextChanged {
-            updateLoginButtonState(emailInput.text.toString(), passwordInput.text.toString(), loginButton)
-        }
-
-        loginButton.setOnClickListener {
-            loginButton.isEnabled = false
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
-
-            val client = OkHttpClient()
-            val mediaType = "application/json".toMediaType()
-            val body = """
-                {
-                    "username": "$email",
-                    "password": "$password"
-                }
-            """.trimIndent().toRequestBody(mediaType)
-            val request = Request.Builder()
-                .url("${BuildConfig.BASE_URL}/api/auth/token/")
-                .post(body)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json")
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    showError(this@LoginActivity, e.message ?: "Network error")
-                    runOnUiThread {
-                        loginButton.isEnabled = true
-                    }
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful) {
-                        loginUser(response)
-                    } else {
-                        val errorBody = response.body?.string()
-                        val errorMsg = try {
-                            var ret = ""
-                            for (i in 0 until JSONObject(errorBody).getJSONArray("errors").length()) {
-                                ret += "${JSONObject(errorBody).getJSONArray("errors").getJSONObject(i).getString("detail")}\n"
-                            }
-                            ret
-                        } catch (e: Exception) {
-                            errorBody ?: "Unknown error"
+        setContent {
+            SimpleNoteTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    LoginScreen(
+                        onLoginClick = { email, password ->
+                            performLogin(email, password)
+                        },
+                        onRegisterClick = {
+                            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+                            finish()
                         }
-                        showError(this@LoginActivity, errorMsg)
-                        runOnUiThread {
-                            loginButton.isEnabled = true
-                        }
-                    }
+                    )
                 }
-            })
-        }
-
-        registerLink.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-            finish()
+            }
         }
     }
 
-    private fun updateLoginButtonState(email: String, password: String, loginButton: Button) {
-        loginButton.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+    private fun performLogin(email: String, password: String) {
+        val client = OkHttpClient()
+        val mediaType = "application/json".toMediaType()
+        val body = """
+            {
+                "username": "$email",
+                "password": "$password"
+            }
+        """.trimIndent().toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("${BuildConfig.BASE_URL}/api/auth/token/")
+            .post(body)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                showError(this@LoginActivity, e.message ?: "Network error")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    loginUser(response)
+                } else {
+                    val errorBody = response.body?.string()
+                    val errorMsg = try {
+                        var ret = ""
+                        for (i in 0 until JSONObject(errorBody).getJSONArray("errors").length()) {
+                            ret += "${JSONObject(errorBody).getJSONArray("errors").getJSONObject(i).getString("detail")}\n"
+                        }
+                        ret
+                    } catch (e: Exception) {
+                        errorBody ?: "Unknown error"
+                    }
+                    showError(this@LoginActivity, errorMsg)
+                }
+            }
+        })
     }
 
     private fun loginUser(response: Response) {
