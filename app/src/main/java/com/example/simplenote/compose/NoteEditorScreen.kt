@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteEditorScreen(
     noteId: Int,
@@ -37,7 +38,7 @@ fun NoteEditorScreen(
     var content by remember { mutableStateOf("") }
     var lastEdited by remember { mutableStateOf(Date()) }
     var currentNote by remember { mutableStateOf<Note?>(null) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
+    var showDeleteBottomSheet by remember { mutableStateOf(false) }
     
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -213,7 +214,7 @@ fun NoteEditorScreen(
                     .background(PrimaryBlue)
                     .clickable { 
                         if (currentNote != null) {
-                            showDeleteDialog = true
+                            showDeleteBottomSheet = true
                         }
                     },
                 contentAlignment = Alignment.Center
@@ -228,28 +229,90 @@ fun NoteEditorScreen(
         }
     }
     
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Note") },
-            text = { Text("Are you sure you want to delete this note?") },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showDeleteDialog = false
-                        deleteNote()
-                    }
-                ) {
-                    Text("Delete", color = AccentRed)
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { showDeleteDialog = false }
-                ) {
-                    Text("Cancel")
-                }
+    if (showDeleteBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showDeleteBottomSheet = false },
+            containerColor = BackgroundWhite,
+            contentColor = TextPrimary,
+            dragHandle = {
+                Box(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(4.dp)
+                        .background(
+                            color = Color.Gray.copy(alpha = 0.3f),
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(2.dp)
+                        )
+                )
             }
-        )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = "Delete Note",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextPrimary
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Text(
+                    text = "Are you sure you want to delete this note? This action cannot be undone.",
+                    fontSize = 14.sp,
+                    color = TextTertiary,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = { showDeleteBottomSheet = false },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = TextPrimary
+                        ),
+                        border = androidx.compose.foundation.BorderStroke(
+                            1.dp, 
+                            Color.Gray.copy(alpha = 0.3f)
+                        )
+                    ) {
+                        Text(
+                            text = "Cancel",
+                            fontSize = 16.sp
+                        )
+                    }
+                    
+                    Button(
+                        onClick = {
+                            showDeleteBottomSheet = false
+                            deleteNote()
+                        },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = AccentRed
+                        )
+                    ) {
+                        Text(
+                            text = "Delete",
+                            fontSize = 16.sp,
+                            color = TextWhite
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
     }
 } 
