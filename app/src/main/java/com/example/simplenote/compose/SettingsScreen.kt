@@ -299,18 +299,18 @@ fun SettingsScreen(
                         showLogoutDialog = false
                         performLogout()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = AccentRedDark)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 ) {
-                    Text(stringResource(R.string.yes), color = TextWhite)
+                    Text(stringResource(R.string.cancel), color = AccentPurple)
                 }
             },
             dismissButton = {
                 Button(
                     onClick = { showLogoutDialog = false },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                    colors = ButtonDefaults.buttonColors(containerColor = AccentPurple),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(stringResource(R.string.cancel), color = AccentBlue)
+                    Text(stringResource(R.string.yes), color = TextWhite)
                 }
             },
             containerColor = BackgroundWhite,

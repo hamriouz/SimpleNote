@@ -26,6 +26,8 @@ val TextDark = Color(0xFF070707)
 val AccentRed = Color(0xFFFF4444)
 val AccentRedDark = Color(0xFFE53935)
 val AccentBlue = Color(0xFF1D1DD3)
+val AccentPurple = Color(0xFF7B02A2)
+
 
 val ButtonDisabled = Color(0xFFCCCCCC)
 val ButtonDisabledDark = Color(0xFFBBBBBB)
