@@ -3,9 +3,6 @@ package com.example.simplenote.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.content.edit
-import androidx.core.widget.doAfterTextChanged
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.example.simplenote.BuildConfig
-import com.example.simplenote.R
 import com.example.simplenote.compose.RegisterScreen
 import com.example.simplenote.ui.theme.SimpleNoteTheme
 import okhttp3.Call

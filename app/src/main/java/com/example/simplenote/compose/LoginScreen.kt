@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,7 +28,6 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var isLoginEnabled by remember { mutableStateOf(false) }
 
-    // Update login button state based on input
     LaunchedEffect(email, password) {
         isLoginEnabled = email.isNotBlank() && password.isNotBlank()
     }
@@ -41,7 +39,6 @@ fun LoginScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Title
         Text(
             text = stringResource(R.string.let_s_login),
             fontSize = 24.sp,
@@ -49,7 +46,6 @@ fun LoginScreen(
             color = TextPrimary
         )
 
-        // Subtitle
         Text(
             text = stringResource(R.string.and_notes_your_idea),
             fontSize = 16.sp,
@@ -57,7 +53,6 @@ fun LoginScreen(
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Email input
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -67,7 +62,6 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
-        // Password input
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -78,7 +72,6 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
-        // Login button
         Button(
             onClick = { onLoginClick(email, password) },
             modifier = Modifier
@@ -97,7 +90,6 @@ fun LoginScreen(
             )
         }
 
-        // Divider with "or" text
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -119,7 +111,6 @@ fun LoginScreen(
             )
         }
 
-        // Register link
         TextButton(
             onClick = onRegisterClick,
             modifier = Modifier.align(Alignment.CenterHorizontally)
