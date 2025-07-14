@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -137,9 +138,10 @@ fun ChangePasswordScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
                 .background(BackgroundWhite)
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .statusBarsPadding()
+                .height(72.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
@@ -167,7 +169,6 @@ fun ChangePasswordScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextPrimary,
-                modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
             )
             
@@ -244,17 +245,19 @@ fun ChangePasswordScreen(
                 isError = retypeNewPassword.isNotBlank() && newPassword != retypeNewPassword
             )
             
+            Spacer(modifier = Modifier.height(24.dp))
+            
             Button(
                 onClick = { submitPasswordChange() },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(top = 16.dp, bottom = 16.dp),
+                    .height(56.dp),
                 enabled = isSubmitEnabled && !isLoading,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = PrimaryBlue,
                     disabledContainerColor = ButtonDisabled
-                )
+                ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
@@ -263,15 +266,17 @@ fun ChangePasswordScreen(
                     )
                 } else {
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = stringResource(R.string.submit_new_password),
                             color = TextWhite,
                             fontSize = 18.sp,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center
+                            fontWeight = FontWeight.Medium
                         )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             painter = painterResource(id = R.drawable.arrowright),
                             contentDescription = null,
@@ -281,6 +286,8 @@ fun ChangePasswordScreen(
                     }
                 }
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 } 

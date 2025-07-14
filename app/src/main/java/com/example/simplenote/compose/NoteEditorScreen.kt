@@ -110,9 +110,10 @@ fun NoteEditorScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
                 .background(BackgroundWhite)
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .statusBarsPadding()
+                .height(72.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(

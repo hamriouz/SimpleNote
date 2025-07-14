@@ -30,37 +30,45 @@ fun OnboardingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 32.dp)
+                .padding(top = 48.dp, bottom = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.onboarding),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(280.dp)
-                    .padding(top = 48.dp),
-                contentScale = ContentScale.Fit
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.onboarding),
+                    contentDescription = null,
+                    modifier = Modifier.size(280.dp),
+                    contentScale = ContentScale.Fit
+                )
 
-            Text(
-                text = "Jot Down anything you want to \n achieve, today or in the future",
-                color = TextWhite,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 24.dp)
-            )
-
+                Text(
+                    text = "Jot Down anything you want to \n achieve, today or in the future",
+                    color = TextWhite,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 24.dp)
+                )
+            }
+            
             Button(
                 onClick = onGetStartedClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(top = 48.dp),
+                    .height(56.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = BackgroundWhite
+                    containerColor = BackgroundWhite,
+                    contentColor = PrimaryBlue
                 ),
-                shape = RoundedCornerShape(28.dp)
+                shape = RoundedCornerShape(28.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 4.dp,
+                    pressedElevation = 8.dp
+                )
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -69,15 +77,13 @@ fun OnboardingScreen(
                 ) {
                     Text(
                         text = "Let's Get Started",
-                        color = PrimaryBlue,
                         fontSize = 16.sp,
-                        modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center
+                        fontWeight = FontWeight.Medium
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = null,
-                        tint = PrimaryBlue,
                         modifier = Modifier.size(24.dp)
                     )
                 }
